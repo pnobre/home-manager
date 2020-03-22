@@ -15,6 +15,11 @@ in {
   options.services.mbsync = {
     enable = mkEnableOption "mbsync";
 
+    user = mkOption {
+      type = types.str;
+      default = "";
+    };
+    
     package = mkOption {
       type = types.package;
       default = pkgs.isync;
@@ -83,6 +88,7 @@ in {
         Type = "oneshot";
         ExecStart =
           "${cfg.package}/bin/mbsync ${concatStringsSep " " mbsyncOptions}";
+        User = "${cfg.user}";
       } // (optionalAttrs (cfg.postExec != null) {
         ExecStartPost = cfg.postExec;
       }) // (optionalAttrs (cfg.preExec != null) {
