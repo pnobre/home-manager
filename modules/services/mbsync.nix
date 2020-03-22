@@ -18,6 +18,13 @@ in {
     user = mkOption {
       type = types.str;
       default = "";
+      description = "service user";      
+    };
+    
+    group = mkOption { 
+      type = types.str;
+      default = "";
+      description = "service user group";
     };
     
     package = mkOption {
@@ -89,6 +96,7 @@ in {
         ExecStart =
           "${cfg.package}/bin/mbsync ${concatStringsSep " " mbsyncOptions}";
         User = "${cfg.user}";
+        Group = "${cfg.group}";
       } // (optionalAttrs (cfg.postExec != null) {
         ExecStartPost = cfg.postExec;
       }) // (optionalAttrs (cfg.preExec != null) {
